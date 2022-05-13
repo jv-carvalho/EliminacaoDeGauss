@@ -30,24 +30,25 @@ function getMatrixValues() {
         let aux = []
         let aux2 =[]
         for (col = 0; col < parseInt(quantidade) + 1; col += 1) {
-            if (col != quantidade) {
+
                 //If que pega valores da matriz A
-                if(col  != (parseInt(quantidade)) && col < parseInt(quantidade)){ 
+                if(col  != (parseInt(quantidade)) && col < parseInt(quantidade)+1){ 
                 aux.push(parseFloat(document.getElementById(`a${row.toString() + col.toString()}`).value))
                 }else 
-                //If que pega valores da matriz B (resultado de cada equação)
-                if(col  = (parseInt(quantidade) -1)){
+                //If que pega valores da matriz B 
+                if(col  == (parseInt(quantidade)) && col < parseInt(quantidade)+1){
                     aux2.push(parseFloat(document.getElementById(`a${row.toString() + col.toString()}`).value))
                 }
-            }
+            
         }
         matrizA.push(aux)
         matrizB.push(aux2)
     }
-    var result=[matrizA, matrizB]
+    matrix=[matrizA, matrizB]
+    
     console.log(matrizA)
     console.log(matrizB)
-    return result;
+
 }
 
 function retornaMatrizA(){
@@ -60,26 +61,19 @@ function retornaMatrizB(){
     return aux[1]
 }
 
-function calculateMatrix() {
 
-    var matrizA = retornaMatrizA()
-    var matrizB = retornaMatrizB()
-
-    if (matrizA.length == 0) {
-        return;
-    }
-
-    let resultado = "";
-
-    console.log(matrizA)
-    console.log(matrizB)
 
     /**
      * Faz o calculo abaixo
      */
      function escalonamento(){
+
+   
         var matrizA = retornaMatrizA()
-        var b = retornaMatrizB
+        var b = retornaMatrizB()
+
+        console.log("Esca")
+        console.log(b)
 
         var aux1, aux2, aux3, l, m;
     
@@ -119,38 +113,52 @@ function calculateMatrix() {
                 }
             }
         }
-        return matrizA;
+        console.log("Resusult b")
+        console.log(b)
+        var matrizResult= [matrizA, b]
+        return matrizResult
      
     
     }
     
     function calcResultado(){
-        var A = escalonamento()
+
+        var matrizResult = escalonamento()
+        var A = matrizResult[0]
+        var b = retornaMatrizB()
+        console.log(matrizResult)
+        console.log(A)
+        console.log(b)
         var X = [];
         for(i = A.length - 1; i >= 0; i--){
             X[i] = b[i];
             for(j = i + 1; j < A.length; j++){
                 X[i] = X[i] - X[j] * A[i][j];
+                console.log(X)
             }
             X[i] = X[i] / A[i][i];
+            console.log(X)
         }
-        return X;
-    }
-
-    // MOSTRA NO FRONT-END O VALOR DA VARIAVEL "resultado"
+       
+            // MOSTRA NO FRONT-END O VALOR DA VARIAVEL "resultado"
     const div = document.createElement('div');
-    div.innerHTML = resultado;
+    div.innerHTML = X;
     // Adiciona valor do resultado no front
     document.getElementById("result").appendChild(div)
     // Mostra div no front
     document.getElementById("result").style.display = ""
-}
+
+    return X;
+    }
+
+
 
 function calcular() {
     getMatrixValues()
     retornaMatrizA()
     retornaMatrizA()
-    calculateMatrix()
+    var resultadoF= escalonamento()
+    console.log(calcResultado())
 
 }
 
